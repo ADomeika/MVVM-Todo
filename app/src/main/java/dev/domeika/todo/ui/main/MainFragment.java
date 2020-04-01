@@ -1,11 +1,9 @@
 package dev.domeika.todo.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +23,7 @@ import dev.domeika.todo.R;
 import dev.domeika.todo.adapter.TodoAdapter;
 import dev.domeika.todo.database.Todo;
 
-public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickListener {
+public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickListener, TodoAdapter.OnCheckBoxClickListener {
     private List<Todo> mTodos;
     private MainViewModel mMainViewModel;
     private View view;
@@ -63,7 +61,7 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
 
         if (mTodos != null) {
             if (!mTodos.isEmpty()) {
-                TodoAdapter mAdapter = new TodoAdapter(mTodos, this);
+                TodoAdapter mAdapter = new TodoAdapter(mTodos, this, this);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
             }
@@ -94,5 +92,12 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
         transaction.replace(R.id.container, todoEditFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onCheckBoxClick(int position) {
+        Todo todo = mTodos.get(position);
+        todo.setIsComplete(!todo.getIsComplete());
+        mMainViewModel.update(todo);
     }
 }
