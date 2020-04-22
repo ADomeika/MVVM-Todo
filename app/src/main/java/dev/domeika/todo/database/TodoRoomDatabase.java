@@ -45,7 +45,6 @@ public abstract class TodoRoomDatabase extends RoomDatabase {
                 @Override
                 public void run() {
                     ITodoDao dao = INSTANCE.todoDao();
-
                     dao.destroy();
                 }
             });
