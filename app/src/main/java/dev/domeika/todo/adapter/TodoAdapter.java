@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dev.domeika.todo.R;
-import dev.domeika.todo.database.Todo;
+import dev.domeika.todo.models.Todo;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     private List<Todo> mTodos;

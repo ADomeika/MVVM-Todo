@@ -10,12 +10,14 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import dev.domeika.todo.models.Todo;
+
 @Dao
 public interface ITodoDao {
-    @Query("SELECT * FROM Todo ORDER BY id")
+    @Query("SELECT * FROM Todo ORDER BY todoId")
     LiveData<List<Todo>> index();
 
-    @Query("SELECT * FROM Todo WHERE id = :id")
+    @Query("SELECT * FROM Todo WHERE todoId = :id")
     Todo show(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

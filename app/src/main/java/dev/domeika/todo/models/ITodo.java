@@ -1,4 +1,4 @@
-package dev.domeika.todo.database;
+package dev.domeika.todo.models;
 
 interface ITodo {
 

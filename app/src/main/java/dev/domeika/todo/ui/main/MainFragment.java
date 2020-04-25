@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import dev.domeika.todo.R;
 import dev.domeika.todo.adapter.TodoAdapter;
-import dev.domeika.todo.database.Todo;
+import dev.domeika.todo.models.Todo;
 
 public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickListener, TodoAdapter.OnCheckBoxClickListener {
     private List<Todo> mTodos;
@@ -71,13 +71,9 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
         btnAddTodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMainViewModel.setTodoLocation(null);
                 TodoAddFragment todoAddFragment = TodoAddFragment.newInstance();
-                assert getFragmentManager() != null;
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.replace(R.id.container, todoAddFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                transactFragment(todoAddFragment);
             }
         });
     }
@@ -86,12 +82,7 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
     public void onTodoClick(int position) {
         mMainViewModel.setTodo(mTodos.get(position));
         TodoEditFragment todoEditFragment = TodoEditFragment.newInstance();
-        assert getFragmentManager() != null;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.replace(R.id.container, todoEditFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        transactFragment(todoEditFragment);
     }
 
     @Override
@@ -99,5 +90,13 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
         Todo todo = mTodos.get(position);
         todo.setIsComplete(!todo.getIsComplete());
         mMainViewModel.update(todo);
+    }
+
+    private void transactFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

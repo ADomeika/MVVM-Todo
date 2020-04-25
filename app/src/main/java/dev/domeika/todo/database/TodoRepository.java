@@ -1,18 +1,18 @@
 package dev.domeika.todo.database;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
+import dev.domeika.todo.models.Todo;
+import dev.domeika.todo.models.TodoLocation;
 
 public class TodoRepository {
     private ITodoDao mTodoDao;
     private LiveData<List<Todo>> mLiveDataTodos;
 
     public TodoRepository(Application application) {
-        TodoRoomDatabase taskRoomDatabase = TodoRoomDatabase.getDatabase(application);
-        mTodoDao = taskRoomDatabase.todoDao();
+        TodoRoomDatabase todoRoomDatabase = TodoRoomDatabase.getDatabase(application);
+        mTodoDao = todoRoomDatabase.todoDao();
         mLiveDataTodos = mTodoDao.index();
     }
 

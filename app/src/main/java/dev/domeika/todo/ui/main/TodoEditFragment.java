@@ -11,14 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
 import dev.domeika.todo.R;
-import dev.domeika.todo.database.Todo;
+import dev.domeika.todo.models.Todo;
 
-public class TodoEditFragment extends Fragment {
+public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
+    private GoogleMap mMap;
     private MainViewModel mMainViewModel;
 
     public TodoEditFragment() {}
@@ -32,6 +39,12 @@ public class TodoEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo_edit, container, false);
         mMainViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(MainViewModel.class);
+
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
 
         updateUI(view);
 
@@ -58,8 +71,7 @@ public class TodoEditFragment extends Fragment {
                 mMainViewModel.update(mTodo);
 
                 MainFragment mainFragment = MainFragment.newInstance();
-                assert getFragmentManager() != null;
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
                 transaction.replace(R.id.container, mainFragment);
                 transaction.commitNow();
@@ -73,12 +85,23 @@ public class TodoEditFragment extends Fragment {
                 mMainViewModel.delete(mTodo);
 
                 MainFragment mainFragment = MainFragment.newInstance();
-                assert getFragmentManager() != null;
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
                 transaction.replace(R.id.container, mainFragment);
                 transaction.commitNow();
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMinZoomPreference(15);
+        LatLng location = new LatLng(
+                mMainViewModel.getTodoLocation().getLatitude(),
+                mMainViewModel.getTodoLocation().getLongitude()
+        );
+        mMap.addMarker(new MarkerOptions().position(location).title("Marker in " + mMainViewModel.getTodoLocation().getName()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 }

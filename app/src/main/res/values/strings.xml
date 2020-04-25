@@ -11,4 +11,7 @@
     <string name="hint_todo_title">Todo title</string>
     <string name="hint_todo_description">Todo description</string>
     <string name="button_add">Add</string>
+    <string name="choose_todo_location">Choose Todo Location</string>
+    <string name="accept_location">Accept Location</string>
+    <string name="chosen_location">Chosen Location</string>
 </resources>

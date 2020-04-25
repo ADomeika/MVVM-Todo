@@ -1,6 +1,7 @@
-package dev.domeika.todo.database;
+package dev.domeika.todo.models;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,7 +9,7 @@ import androidx.room.PrimaryKey;
 public class Todo implements ITodo {
     @ColumnInfo
     @PrimaryKey(autoGenerate = true)
-    protected Long id = 1L;
+    public Long todoId = 1L;
 
     @ColumnInfo
     private String title;
@@ -19,17 +20,21 @@ public class Todo implements ITodo {
     @ColumnInfo
     private boolean isComplete = false;
 
-    public Todo(String title, String description) {
+    @Embedded
+    private TodoLocation location;
+
+    public Todo(String title, String description, TodoLocation location) {
         this.title = title;
         this.description = description;
+        this.location = location;
     }
 
     public Long getTodoId() {
-        return id;
+        return todoId;
     }
 
     public void setTodoId(Long id) {
-        this.id = id;
+        this.todoId = id;
     }
 
     public String getTitle() {
@@ -54,5 +59,13 @@ public class Todo implements ITodo {
 
     public void setIsComplete(boolean isComplete) {
         this.isComplete = isComplete;
+    }
+
+    public TodoLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(TodoLocation location) {
+        this.location = location;
     }
 }
