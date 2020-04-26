@@ -1,7 +1,6 @@
 package dev.domeika.todo.models;
 
 interface ITodo {
-
     Long getTodoId();
 
     void setTodoId(Long taskId);
@@ -17,4 +16,8 @@ interface ITodo {
     boolean getIsComplete();
 
     void setIsComplete(boolean isComplete);
+
+    TodoLocation getLocation();
+
+    void setLocation(TodoLocation location);
 }
