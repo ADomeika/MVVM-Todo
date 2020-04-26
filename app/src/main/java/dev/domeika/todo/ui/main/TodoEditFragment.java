@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import dev.domeika.todo.R;
 import dev.domeika.todo.models.Todo;
+import dev.domeika.todo.models.TodoLocation;
 
 public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -30,7 +31,7 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
 
     public TodoEditFragment() {}
 
-    public static TodoEditFragment newInstance() {
+    static TodoEditFragment newInstance() {
         return new TodoEditFragment();
     }
 
@@ -54,6 +55,7 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateUI(View view) {
         final Todo mTodo = mMainViewModel.getTodo();
+        final TodoLocation mTodoLocation = mMainViewModel.getTodoLocation();
 
         final EditText mEditTextTitleEdit = view.findViewById(R.id.inputTitleEdit);
         mEditTextTitleEdit.setText(mTodo.getTitle());
@@ -71,10 +73,7 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
                 mMainViewModel.update(mTodo);
 
                 MainFragment mainFragment = MainFragment.newInstance();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                transaction.replace(R.id.container, mainFragment);
-                transaction.commitNow();
+                transactFragment(mainFragment);
             }
         });
 
@@ -82,13 +81,10 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
         mBtnRemoveTodo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mMainViewModel.delete(mTodo);
+                mMainViewModel.delete(mTodo, mTodoLocation);
 
                 MainFragment mainFragment = MainFragment.newInstance();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                transaction.replace(R.id.container, mainFragment);
-                transaction.commitNow();
+                transactFragment(mainFragment);
             }
         });
     }
@@ -103,5 +99,12 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
         );
         mMap.addMarker(new MarkerOptions().position(location).title("Marker in " + mMainViewModel.getTodoLocation().getName()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+    }
+
+    private void transactFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        transaction.replace(R.id.container, fragment);
+        transaction.commitNow();
     }
 }

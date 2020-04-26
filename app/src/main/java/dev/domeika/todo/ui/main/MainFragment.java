@@ -81,6 +81,7 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
     @Override
     public void onTodoClick(int position) {
         mMainViewModel.setTodo(mTodos.get(position));
+        mMainViewModel.setTodoLocation(mTodos.get(position).getLocation());
         TodoEditFragment todoEditFragment = TodoEditFragment.newInstance();
         transactFragment(todoEditFragment);
     }

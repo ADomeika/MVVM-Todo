@@ -2,6 +2,7 @@ package dev.domeika.todo.ui.main;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -84,7 +85,7 @@ public class LocationSelectionFragment extends Fragment implements OnMapReadyCal
         ));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
+            public void onPlaceSelected(@NonNull Place place) {
                 mMap.clear();
                 addMarker(place.getLatLng().latitude, place.getLatLng().longitude, place.getName());
 
@@ -98,7 +99,7 @@ public class LocationSelectionFragment extends Fragment implements OnMapReadyCal
             }
 
             @Override
-            public void onError(Status status) {
+            public void onError(@NonNull Status status) {
                 Log.i("TEST", "An error occurred: " + status);
             }
         });
@@ -114,6 +115,7 @@ public class LocationSelectionFragment extends Fragment implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnPoiClickListener(this);
         mMap = googleMap;
+        mMap.setMinZoomPreference(15);
 
         if (mMainViewModel.getTodoLocation() != null) {
             addMarker(
@@ -124,7 +126,6 @@ public class LocationSelectionFragment extends Fragment implements OnMapReadyCal
         } else {
             addMarker(53.801277, -1.548567, "Leeds");
         }
-        mMap.setMinZoomPreference(15);
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -157,6 +158,7 @@ public class LocationSelectionFragment extends Fragment implements OnMapReadyCal
                 poi.latLng.latitude,
                 poi.latLng.longitude
         );
+
         mMainViewModel.setTodoLocation(location);
     }
 }

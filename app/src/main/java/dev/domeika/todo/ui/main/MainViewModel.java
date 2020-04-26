@@ -1,6 +1,7 @@
 package dev.domeika.todo.ui.main;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -45,7 +46,7 @@ public class MainViewModel extends AndroidViewModel {
         mTodos = todos;
     }
 
-    public List<Todo> getTodos() {
+    List<Todo> getTodos() {
         return mTodos;
     }
 
@@ -55,11 +56,12 @@ public class MainViewModel extends AndroidViewModel {
         mTodos.add(todo);
     }
 
-    public void update(Todo todo) {
+    void update(Todo todo) {
         mTodoRepository.update(todo);
     }
 
-    void delete(Todo todo) {
+    void delete(Todo todo, TodoLocation todoLocation) {
+        mTodoLocationRepository.delete(todoLocation);
         mTodoRepository.delete(todo);
         mTodos.remove(todo);
     }
@@ -72,11 +74,11 @@ public class MainViewModel extends AndroidViewModel {
         mTodoRepository.show(id);
     }
 
-    public void setTodoLocation(TodoLocation location) {
+    void setTodoLocation(TodoLocation location) {
         mTodoLocation = location;
     }
 
-    public TodoLocation getTodoLocation() {
+    TodoLocation getTodoLocation() {
         return mTodoLocation;
     }
 }

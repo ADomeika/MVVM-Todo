@@ -19,4 +19,13 @@ public class TodoLocationRepository {
             }
         });
     }
+
+    public void delete(final TodoLocation todoLocation) {
+        TodoRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mTodoLocationDao.delete(todoLocation);
+            }
+        });
+    }
 }

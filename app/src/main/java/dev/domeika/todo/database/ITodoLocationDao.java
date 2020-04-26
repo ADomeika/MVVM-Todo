@@ -1,6 +1,7 @@
 package dev.domeika.todo.database;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,4 +14,7 @@ public interface ITodoLocationDao {
 
     @Query("DELETE FROM TodoLocation")
     void destroy();
+
+    @Delete
+    void delete(TodoLocation todoLocation);
 }

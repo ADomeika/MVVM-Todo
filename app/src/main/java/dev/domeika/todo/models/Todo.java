@@ -1,5 +1,6 @@
 package dev.domeika.todo.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -12,6 +13,7 @@ public class Todo implements ITodo {
     public Long todoId = 1L;
 
     @ColumnInfo
+    @NonNull
     private String title;
 
     @ColumnInfo
