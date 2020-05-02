@@ -19,8 +19,8 @@ import dev.domeika.todo.models.TodoLocation;
 public abstract class TodoRoomDatabase extends RoomDatabase {
     private final static String DATABASE_NAME = "todo_database";
 
-    abstract ITodoDao todoDao();
-    abstract ITodoLocationDao todoLocationDao();
+    abstract TodoDao getTodoDao();
+    abstract TodoLocationDao getTodoLocationDao();
 
     private static volatile TodoRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -30,7 +30,6 @@ public abstract class TodoRoomDatabase extends RoomDatabase {
     static TodoRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (TodoRoomDatabase.class) {
-                Log.d("TEST", "Instance: " + INSTANCE);
                 INSTANCE = Room
                         .databaseBuilder(context.getApplicationContext(),
                                 TodoRoomDatabase.class,

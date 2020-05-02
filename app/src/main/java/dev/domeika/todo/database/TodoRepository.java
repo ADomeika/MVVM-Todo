@@ -1,30 +1,32 @@
 package dev.domeika.todo.database;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 import dev.domeika.todo.models.Todo;
 import dev.domeika.todo.models.TodoLocation;
 
 public class TodoRepository {
-    private ITodoDao mTodoDao;
-    private ITodoLocationDao mTodoLocationDao;
+    private TodoDao mTodoDao;
+    private TodoLocationDao mTodoLocationDao;
     private LiveData<List<Todo>> mLiveDataTodos;
 
     public TodoRepository(Application application) {
         TodoRoomDatabase todoRoomDatabase = TodoRoomDatabase.getDatabase(application);
-        mTodoDao = todoRoomDatabase.todoDao();
-        mTodoLocationDao = todoRoomDatabase.todoLocationDao();
+        mTodoDao = todoRoomDatabase.getTodoDao();
+        mTodoLocationDao = todoRoomDatabase.getTodoLocationDao();
 
         mLiveDataTodos = mTodoDao.index();
     }
 
-    public LiveData<List<Todo>> getLiveDataTasks() {
+    public LiveData<List<Todo>> getLiveDataTodos() {
         return mLiveDataTodos;
     }
 
     // Insert Todo
-    public void insert(final Todo todo) {
+    public void insertTodo(final Todo todo) {
         TodoRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -34,7 +36,7 @@ public class TodoRepository {
     }
 
     // Delete Todo
-    public void delete(final Todo todo) {
+    public void deleteTodo(final Todo todo) {
         TodoRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -49,26 +51,6 @@ public class TodoRepository {
             @Override
             public void run() {
                 mTodoDao.update(todo);
-            }
-        });
-    }
-
-    // Index Todos
-    public void index() {
-        TodoRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTodoDao.index();
-            }
-        });
-    }
-
-    // Show Todo
-    public void show(final Long id) {
-        TodoRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTodoDao.show(id);
             }
         });
     }

@@ -47,9 +47,8 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
         mMainViewModel.getLiveDataTodos().observe(getActivity(), new Observer<List<Todo>>() {
             @Override
             public void onChanged(List<Todo> observedTodos) {
-                if (!mMainViewModel.getTodos().isEmpty()) {
-                    mTodos = mMainViewModel.getTodos();
-                }
+                mMainViewModel.setTodos(observedTodos);
+                mTodos = mMainViewModel.getTodos();
                 updateUI();
             }
         });
@@ -59,13 +58,10 @@ public class MainFragment extends Fragment implements TodoAdapter.OnTodoClickLis
         RecyclerView recyclerView = view.findViewById(R.id.todos_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        if (mTodos != null) {
-            if (!mTodos.isEmpty()) {
-                TodoAdapter mAdapter = new TodoAdapter(mTodos, this, this);
-                recyclerView.setAdapter(mAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-            }
-        }
+        TodoAdapter mAdapter = new TodoAdapter(mTodos, this, this);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
 
         FloatingActionButton btnAddTodo = view.findViewById(R.id.btnAddTodo);
         btnAddTodo.setOnClickListener(new View.OnClickListener() {

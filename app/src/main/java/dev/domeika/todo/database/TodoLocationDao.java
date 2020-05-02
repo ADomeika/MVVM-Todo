@@ -8,7 +8,7 @@ import androidx.room.Query;
 import dev.domeika.todo.models.TodoLocation;
 
 @Dao
-public interface ITodoLocationDao {
+public interface TodoLocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TodoLocation todoLocation);
 

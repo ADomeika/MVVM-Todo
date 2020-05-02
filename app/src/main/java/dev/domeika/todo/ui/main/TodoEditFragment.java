@@ -72,8 +72,7 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
 
                 mMainViewModel.update(mTodo);
 
-                MainFragment mainFragment = MainFragment.newInstance();
-                transactFragment(mainFragment);
+                returnToMainFragment();
             }
         });
 
@@ -83,8 +82,7 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 mMainViewModel.delete(mTodo, mTodoLocation);
 
-                MainFragment mainFragment = MainFragment.newInstance();
-                transactFragment(mainFragment);
+                returnToMainFragment();
             }
         });
     }
@@ -101,10 +99,11 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
-    private void transactFragment(Fragment fragment) {
+    private void returnToMainFragment() {
+        MainFragment mainFragment = MainFragment.newInstance();
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, mainFragment);
         transaction.commitNow();
     }
 }

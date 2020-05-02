@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.domeika.todo.R;
@@ -82,7 +83,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mTodos.size();
+        if (mTodos != null) {
+            return mTodos.size();
+        }
+        return 0;
     }
 
     public interface OnTodoClickListener {

@@ -23,7 +23,7 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
 
         mTodoRepository = new TodoRepository(application);
-        liveDataTodos = mTodoRepository.getLiveDataTasks();
+        liveDataTodos = mTodoRepository.getLiveDataTodos();
     }
 
     LiveData<List<Todo>> getLiveDataTodos() {
@@ -33,7 +33,6 @@ public class MainViewModel extends AndroidViewModel {
     public void setTodo(Todo todo) {
         mTodo = todo;
     }
-
     public Todo getTodo() {
         return mTodo;
     }
@@ -41,14 +40,13 @@ public class MainViewModel extends AndroidViewModel {
     public void setTodos(List<Todo> todos) {
         mTodos = todos;
     }
-
     List<Todo> getTodos() {
         return mTodos;
     }
 
     void insert(Todo todo, TodoLocation todoLocation) {
         mTodoRepository.insert(todoLocation);
-        mTodoRepository.insert(todo);
+        mTodoRepository.insertTodo(todo);
         mTodos.add(todo);
     }
 
@@ -58,16 +56,8 @@ public class MainViewModel extends AndroidViewModel {
 
     void delete(Todo todo, TodoLocation todoLocation) {
         mTodoRepository.delete(todoLocation);
-        mTodoRepository.delete(todo);
+        mTodoRepository.deleteTodo(todo);
         mTodos.remove(todo);
-    }
-
-    public void index() {
-        mTodoRepository.index();
-    }
-
-    public void show(Long id) {
-        mTodoRepository.show(id);
     }
 
     void setTodoLocation(TodoLocation location) {

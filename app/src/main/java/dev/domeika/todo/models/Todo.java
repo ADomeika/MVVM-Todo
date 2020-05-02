@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 public class Todo implements ITodo {
     @ColumnInfo
     @PrimaryKey(autoGenerate = true)
-    public Long todoId = 1L;
+    public Long todoId;
 
     @ColumnInfo
     @NonNull

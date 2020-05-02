@@ -13,14 +13,14 @@ import java.util.List;
 import dev.domeika.todo.models.Todo;
 
 @Dao
-public interface ITodoDao {
+public interface TodoDao {
     @Query("SELECT * FROM Todo ORDER BY todoId")
     LiveData<List<Todo>> index();
 
-    @Query("SELECT * FROM Todo WHERE todoId = :id")
-    Todo show(long id);
+//    @Query("SELECT * FROM Todo WHERE todoId = :id")
+//    Todo show(long id);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insert(Todo todo);
 
     @Update
@@ -29,6 +29,6 @@ public interface ITodoDao {
     @Delete
     void delete(Todo todo);
 
-    @Query("DELETE FROM Todo")
-    void destroy();
+//    @Query("DELETE FROM Todo")
+//    void destroy();
 }
