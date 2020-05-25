@@ -17,6 +17,7 @@ public class Todo implements ITodo {
     private String title;
 
     @ColumnInfo
+    @NonNull
     private String description;
 
     @ColumnInfo

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -67,12 +68,18 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
         mBtnEditTodo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mTodo.setTitle(mEditTextTitleEdit.getText().toString());
-                mTodo.setDescription(mEditTextDescriptionEdit.getText().toString());
+                if (mEditTextTitleEdit.getText().toString().isEmpty()) {
+                    showToast("Title cannot be empty");
+                } else if (mEditTextDescriptionEdit.getText().toString().isEmpty()) {
+                    showToast("Description cannot be empty");
+                } else {
+                    mTodo.setTitle(mEditTextTitleEdit.getText().toString());
+                    mTodo.setDescription(mEditTextDescriptionEdit.getText().toString());
 
-                mMainViewModel.update(mTodo);
+                    mMainViewModel.update(mTodo);
 
-                returnToMainFragment();
+                    returnToMainFragment();
+                }
             }
         });
 
@@ -105,5 +112,13 @@ public class TodoEditFragment extends Fragment implements OnMapReadyCallback {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         transaction.replace(R.id.container, mainFragment);
         transaction.commitNow();
+    }
+
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(getContext(),
+                message,
+                Toast.LENGTH_SHORT);
+
+        toast.show();
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -85,19 +86,35 @@ public class TodoAddFragment extends Fragment {
         mBtnAddTodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TodoLocation todoLocation = mMainViewModel.getTodoLocation();
-                Todo todo = new Todo(mInputTitle.getText().toString(),
-                        mInputDescription.getText().toString(),
-                        todoLocation);
+                if (mMainViewModel.getTodoLocation() == null) {
+                    showToast("Location should be selected");
+                } else if (mInputTitle.getText().toString().isEmpty()) {
+                    showToast("Title cannot be empty");
+                } else if (mInputDescription.getText().toString().isEmpty()) {
+                    showToast("Description cannot be empty");
+                } else {
+                    TodoLocation todoLocation = mMainViewModel.getTodoLocation();
+                    Todo todo = new Todo(mInputTitle.getText().toString(),
+                            mInputDescription.getText().toString(),
+                            todoLocation);
 
-                mMainViewModel.insert(todo, todoLocation);
+                    mMainViewModel.insert(todo, todoLocation);
 
-                MainFragment mainFragment = MainFragment.newInstance();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.replace(R.id.container, mainFragment);
-                transaction.commitNow();
+                    MainFragment mainFragment = MainFragment.newInstance();
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    transaction.replace(R.id.container, mainFragment);
+                    transaction.commitNow();
+                }
             }
         });
+    }
+
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(getContext(),
+                message,
+                Toast.LENGTH_SHORT);
+
+        toast.show();
     }
 }
